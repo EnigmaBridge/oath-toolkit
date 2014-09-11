@@ -57,6 +57,12 @@ glimport:
 	cd libpskc && gnulib-tool --add-import
 	cd pskctool && gnulib-tool --add-import
 
+review-diff:
+	git diff `git describe --abbrev=0`.. \
+	| grep -v -e ^index -e '^diff --git' \
+	| filterdiff -p 1 -x 'build-aux/*' -x '*/build-aux/*' -x 'gl/*' -x '*/gl/*' -x 'gltests/*' -x '*/gltests/*' -x 'maint.mk' -x '.gitignore' -x '.x-sc*' -x 'ChangeLog' -x 'GNUmakefile' -x '.clcopying' \
+	| less
+
 # Release
 
 tag = $(PACKAGE)-`echo $(VERSION) | sed 's/\./-/g'`

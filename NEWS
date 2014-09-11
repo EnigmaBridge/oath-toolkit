@@ -11,6 +11,12 @@ oath_totp_validate4_callback.
 For example use --totp=sha256 to use HMAC-SHA256.  When --totp is used
 the default HMAC-SHA1 is used, as before.
 
+** pam_oath: Mention in README that you shouldn't use insecure keys.
+Suggested by Robin.
+
+** pam_oath: Check return value from strdup.
+Patch by Eero Häkkinen.
+
 * Version 2.4.1 (released 2014-02-12)
 
 ** liboath: Fix usersfile bug that caused it to update the wrong line.

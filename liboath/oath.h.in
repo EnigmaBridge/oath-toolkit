@@ -232,6 +232,8 @@ oath_hotp_validate_callback (const char *secret,
  * @OATH_TOTP_HMAC_SHA512: Use HMAC-SHA512 instead of HMAC-SHA1.
  *
  * Flags for oath_totp_generate2().
+ *
+ * Since: 2.6.0
  */
 typedef enum {
   OATH_TOTP_HMAC_SHA256 = 1,
