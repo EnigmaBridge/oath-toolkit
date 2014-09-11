@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2013 Simon Josefsson
+# Copyright (C) 2012-2014 Simon Josefsson
 
 # This library is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
@@ -53,10 +53,10 @@
    fun:malloc
    fun:xmlStrndup
    fun:xmlSchemaCollapseString
-   obj:/usr/lib/x86_64-linux-gnu/libxml2.so.2.8.0
+   fun:xmlSchemaValAtomicType.constprop.7
    fun:xmlSchemaValPredefTypeNode
-   obj:/usr/lib/x86_64-linux-gnu/libxml2.so.2.8.0
-   obj:/usr/lib/x86_64-linux-gnu/libxml2.so.2.8.0
+   fun:xmlSchemaPValAttrNodeValue.isra.66
+   fun:xmlSchemaParseNewDocWithContext
    fun:xmlSchemaParse
    fun:pskc_validate
    fun:main

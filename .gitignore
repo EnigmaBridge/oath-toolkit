@@ -104,6 +104,7 @@ liboath/gl/tests/test-gc-hmac-sha512
 liboath/gl/tests/test-getcwd-lgpl
 liboath/gl/tests/test-getdelim
 liboath/gl/tests/test-getline
+liboath/gl/tests/test-gettimeofday
 liboath/gl/tests/test-hmac-sha1
 liboath/gl/tests/test-hmac-sha256
 liboath/gl/tests/test-hmac-sha512
@@ -133,6 +134,7 @@ liboath/gl/tests/test-string
 liboath/gl/tests/test-strverscmp
 liboath/gl/tests/test-symlink
 liboath/gl/tests/test-sys_stat
+liboath/gl/tests/test-sys_time
 liboath/gl/tests/test-sys_types
 liboath/gl/tests/test-time
 liboath/gl/tests/test-u64
@@ -276,6 +278,7 @@ libpskc/gl/arg-nonnull.h
 libpskc/gl/c++defs.h
 libpskc/gl/libgnu.la
 libpskc/gl/string.h
+libpskc/gl/sys/
 libpskc/gl/tests/.deps/
 libpskc/gl/tests/alloca.h
 libpskc/gl/tests/arg-nonnull.h
