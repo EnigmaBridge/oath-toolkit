@@ -431,7 +431,7 @@ build_keypackage (pskc_key_t * kp, xmlNodePtr keyp)
 static int
 build_keycont (pskc_t * container, xmlNodePtr keycont)
 {
-  const char *ver = pskc_get_version (container);;
+  const char *ver = pskc_get_version (container);
   const char *id = pskc_get_id (container);
   xmlChar *pskcver = BAD_CAST (ver ? ver : "1.0");
   pskc_key_t *kp;
