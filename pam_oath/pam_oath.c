@@ -146,6 +146,12 @@ pam_sm_authenticate (pam_handle_t * pamh,
   char *query_prompt = NULL;
   char *onlypasswd = strdup ("");	/* empty passwords never match */
 
+  if (!onlypasswd)
+    {
+      retval = PAM_BUF_ERR;
+      goto done;
+    }
+
   parse_cfg (flags, argc, argv, &cfg);
 
   retval = pam_get_user (pamh, &user, NULL);
@@ -265,6 +271,11 @@ pam_sm_authenticate (pam_handle_t * pamh,
     {
       free (onlypasswd);
       onlypasswd = strdup (password);
+      if (!onlypasswd)
+        {
+          retval = PAM_BUF_ERR;
+          goto done;
+        }
 
       /* user entered their system password followed by generated OTP? */
 
