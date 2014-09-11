@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+  # Code from module absolute-header:
   # Code from module alloca-opt:
   # Code from module alloca-opt-tests:
   # Code from module base64:
@@ -138,6 +139,7 @@ AC_DEFUN([gl_INIT],
   gl_STRING_MODULE_INDICATOR([memchr])
   gl_MINMAX
   gl_MULTIARCH
+  gt_TYPE_SSIZE_T
   AM_STDBOOL_H
   gl_STDDEF_H
   gl_STDINT_H
@@ -148,6 +150,8 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_STRVERSCMP
   fi
   gl_STRING_MODULE_INDICATOR([strverscmp])
+  gl_SYS_TYPES_H
+  AC_PROG_MKDIR_P
   gl_VALGRIND_TESTS
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
@@ -229,12 +233,9 @@ changequote([, ])dnl
   gl_FUNC_SNPRINTF
   gl_STDIO_MODULE_INDICATOR([snprintf])
   gl_MODULE_INDICATOR([snprintf])
-  gt_TYPE_SSIZE_T
   AC_REQUIRE([gt_TYPE_WCHAR_T])
   AC_REQUIRE([gt_TYPE_WINT_T])
   gl_STDIO_H
-  gl_SYS_TYPES_H
-  AC_PROG_MKDIR_P
   gl_UNISTD_H
   gl_VALGRIND_TESTS
   gl_FUNC_VASNPRINTF
@@ -351,9 +352,11 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdint.in.h
   lib/string.in.h
   lib/strverscmp.c
+  lib/sys_types.in.h
   lib/uinttostr.c
   lib/umaxtostr.c
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/alloca.m4
   m4/base64.m4
   m4/errno_h.m4
@@ -455,7 +458,6 @@ AC_DEFUN([gl_FILE_LIST], [
   tests=lib/size_max.h
   tests=lib/snprintf.c
   tests=lib/stdio.in.h
-  tests=lib/sys_types.in.h
   tests=lib/unistd.c
   tests=lib/unistd.in.h
   tests=lib/vasnprintf.c

@@ -1,6 +1,6 @@
 ## DO NOT EDIT! GENERATED AUTOMATICALLY!
 ## Process this file with automake to produce Makefile.in.
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -136,6 +136,7 @@ EXTRA_libtests_a_SOURCES += closedir.c
 
 TESTS += test-gc-hmac-sha1
 check_PROGRAMS += test-gc-hmac-sha1
+test_gc_hmac_sha1_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-gc-hmac-sha1.c
 
 ## end   gnulib module crypto/gc-hmac-sha1-tests
@@ -144,6 +145,7 @@ EXTRA_DIST += test-gc-hmac-sha1.c
 
 TESTS += test-gc-hmac-sha256
 check_PROGRAMS += test-gc-hmac-sha256
+test_gc_hmac_sha256_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-gc-hmac-sha256.c
 
 ## end   gnulib module crypto/gc-hmac-sha256-tests
@@ -152,6 +154,7 @@ EXTRA_DIST += test-gc-hmac-sha256.c
 
 TESTS += test-gc-hmac-sha512
 check_PROGRAMS += test-gc-hmac-sha512
+test_gc_hmac_sha512_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-gc-hmac-sha512.c
 
 ## end   gnulib module crypto/gc-hmac-sha512-tests
@@ -160,6 +163,7 @@ EXTRA_DIST += test-gc-hmac-sha512.c
 
 TESTS += test-gc
 check_PROGRAMS += test-gc
+test_gc_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-gc.c
 
 ## end   gnulib module crypto/gc-tests
@@ -168,6 +172,7 @@ EXTRA_DIST += test-gc.c
 
 TESTS += test-hmac-sha1
 check_PROGRAMS += test-hmac-sha1
+test_hmac_sha1_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-hmac-sha1.c
 
 ## end   gnulib module crypto/hmac-sha1-tests
@@ -176,6 +181,7 @@ EXTRA_DIST += test-hmac-sha1.c
 
 TESTS += test-hmac-sha256
 check_PROGRAMS += test-hmac-sha256
+test_hmac_sha256_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-hmac-sha256.c
 
 ## end   gnulib module crypto/hmac-sha256-tests
@@ -184,6 +190,7 @@ EXTRA_DIST += test-hmac-sha256.c
 
 TESTS += test-hmac-sha512
 check_PROGRAMS += test-hmac-sha512
+test_hmac_sha512_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-hmac-sha512.c
 
 ## end   gnulib module crypto/hmac-sha512-tests
@@ -192,6 +199,7 @@ EXTRA_DIST += test-hmac-sha512.c
 
 TESTS += test-sha1
 check_PROGRAMS += test-sha1
+test_sha1_LDADD = $(LDADD) @LIB_CRYPTO@
 EXTRA_DIST += test-sha1.c
 
 ## end   gnulib module crypto/sha1-tests
@@ -515,6 +523,15 @@ EXTRA_libtests_a_SOURCES += getpagesize.c
 
 ## end   gnulib module getpagesize
 
+## begin gnulib module gettimeofday-tests
+
+TESTS += test-gettimeofday
+check_PROGRAMS += test-gettimeofday
+
+EXTRA_DIST += signature.h test-gettimeofday.c
+
+## end   gnulib module gettimeofday-tests
+
 ## begin gnulib module ignore-value
 
 
@@ -573,6 +590,7 @@ inttypes.h: inttypes.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_U
 	      -e 's/@''HAVE_DECL_STRTOIMAX''@/$(HAVE_DECL_STRTOIMAX)/g' \
 	      -e 's/@''HAVE_DECL_STRTOUMAX''@/$(HAVE_DECL_STRTOUMAX)/g' \
 	      -e 's/@''REPLACE_STRTOIMAX''@/$(REPLACE_STRTOIMAX)/g' \
+	      -e 's/@''REPLACE_STRTOUMAX''@/$(REPLACE_STRTOUMAX)/g' \
 	      -e 's/@''INT32_MAX_LT_INTMAX_MAX''@/$(INT32_MAX_LT_INTMAX_MAX)/g' \
 	      -e 's/@''INT64_MAX_EQ_LONG_MAX''@/$(INT64_MAX_EQ_LONG_MAX)/g' \
 	      -e 's/@''UINT32_MAX_LT_UINTMAX_MAX''@/$(UINT32_MAX_LT_UINTMAX_MAX)/g' \
@@ -941,6 +959,14 @@ check_PROGRAMS += test-sys_stat
 EXTRA_DIST += test-sys_stat.c
 
 ## end   gnulib module sys_stat-tests
+
+## begin gnulib module sys_time-tests
+
+TESTS += test-sys_time
+check_PROGRAMS += test-sys_time
+EXTRA_DIST += test-sys_time.c
+
+## end   gnulib module sys_time-tests
 
 ## begin gnulib module sys_types-tests
 

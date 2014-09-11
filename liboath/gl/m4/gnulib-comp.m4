@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+  # Code from module absolute-header:
   # Code from module alloca-opt:
   # Code from module alloca-opt-tests:
   # Code from module base32:
@@ -128,6 +129,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module getline:
   # Code from module getline-tests:
   # Code from module getpagesize:
+  # Code from module gettimeofday:
+  # Code from module gettimeofday-tests:
   # Code from module havelib:
   # Code from module ignore-value:
   # Code from module ignore-value-tests:
@@ -207,6 +210,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module symlink-tests:
   # Code from module sys_stat:
   # Code from module sys_stat-tests:
+  # Code from module sys_time:
+  # Code from module sys_time-tests:
   # Code from module sys_types:
   # Code from module sys_types-tests:
   # Code from module test-framework-sh:
@@ -356,6 +361,12 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_GETLINE
   fi
   gl_STDIO_MODULE_INDICATOR([getline])
+  gl_FUNC_GETTIMEOFDAY
+  if test $HAVE_GETTIMEOFDAY = 0 || test $REPLACE_GETTIMEOFDAY = 1; then
+    AC_LIBOBJ([gettimeofday])
+    gl_PREREQ_GETTIMEOFDAY
+  fi
+  gl_SYS_TIME_MODULE_INDICATOR([gettimeofday])
   AC_REQUIRE([gl_LARGEFILE])
   gl_LD_VERSION_SCRIPT
   gl_VISIBILITY
@@ -451,6 +462,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_STRING_MODULE_INDICATOR([strverscmp])
   gl_HEADER_SYS_STAT_H
+  AC_PROG_MKDIR_P
+  gl_HEADER_SYS_TIME_H
   AC_PROG_MKDIR_P
   gl_SYS_TYPES_H
   AC_PROG_MKDIR_P
@@ -715,6 +728,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/gc.h
   lib/getdelim.c
   lib/getline.c
+  lib/gettimeofday.c
+  lib/gl_openssl.h
   lib/hmac-sha1.c
   lib/hmac-sha256.c
   lib/hmac-sha512.c
@@ -766,6 +781,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strtok_r.c
   lib/strverscmp.c
   lib/sys_stat.in.h
+  lib/sys_time.in.h
   lib/sys_types.in.h
   lib/time.in.h
   lib/u64.c
@@ -780,6 +796,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xsize.c
   lib/xsize.h
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/alloca.m4
   m4/base32.m4
   m4/canonicalize.m4
@@ -817,6 +834,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/getdelim.m4
   m4/getline.m4
   m4/getpagesize.m4
+  m4/gettimeofday.m4
+  m4/gl-openssl.m4
   m4/gnulib-common.m4
   m4/include_next.m4
   m4/intmax_t.m4
@@ -875,7 +894,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/strtok_r.m4
   m4/strverscmp.m4
   m4/symlink.m4
+  m4/sys_socket_h.m4
   m4/sys_stat_h.m4
+  m4/sys_time_h.m4
   m4/sys_types_h.m4
   m4/time_h.m4
   m4/ungetc.m4
@@ -948,6 +969,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-getcwd-lgpl.c
   tests/test-getdelim.c
   tests/test-getline.c
+  tests/test-gettimeofday.c
   tests/test-hmac-sha1.c
   tests/test-hmac-sha256.c
   tests/test-hmac-sha512.c
@@ -986,6 +1008,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-symlink.c
   tests/test-symlink.h
   tests/test-sys_stat.c
+  tests/test-sys_time.c
   tests/test-sys_types.c
   tests/test-sys_wait.h
   tests/test-time.c

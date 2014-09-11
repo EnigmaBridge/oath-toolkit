@@ -1,5 +1,5 @@
 /* Parse a time duration and return a seconds count
-   Copyright (C) 2008-2013 Free Software Foundation, Inc.
+   Copyright (C) 2008-2014 Free Software Foundation, Inc.
    Written by Bruce Korb <bkorb@gnu.org>, 2008.
 
    This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "intprops.h"
+
 #ifndef NUL
 #define NUL '\0'
 #endif
@@ -51,7 +53,8 @@ typedef enum {
 #define SEC_PER_MONTH   (SEC_PER_DAY * 30)
 #define SEC_PER_YEAR    (SEC_PER_DAY * 365)
 
-#define TIME_MAX        0x7FFFFFFF
+#undef  MAX_DURATION
+#define MAX_DURATION    TYPE_MAXIMUM(time_t)
 
 /* Wrapper around strtoul that does not require a cast.  */
 static unsigned long
@@ -80,14 +83,14 @@ scale_n_add (time_t base, time_t val, int scale)
       return BAD_TIME;
     }
 
-  if (val > TIME_MAX / scale)
+  if (val > MAX_DURATION / scale)
     {
       errno = ERANGE;
       return BAD_TIME;
     }
 
   val *= scale;
-  if (base > TIME_MAX - val)
+  if (base > MAX_DURATION - val)
     {
       errno = ERANGE;
       return BAD_TIME;

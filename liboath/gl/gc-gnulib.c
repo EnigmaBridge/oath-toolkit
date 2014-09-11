@@ -1,5 +1,5 @@
 /* gc-gnulib.c --- Common gnulib internal crypto interface functions
- * Copyright (C) 2002-2013 Free Software Foundation, Inc.
+ * Copyright (C) 2002-2014 Free Software Foundation, Inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -65,11 +65,6 @@
 #ifdef GNULIB_GC_RIJNDAEL
 # include "rijndael-api-fst.h"
 #endif
-
-/* The results of open() in this file are not used with fchdir,
-   therefore save some unnecessary work in fchdir.c.  */
-#undef open
-#undef close
 
 #ifdef GNULIB_GC_RANDOM
 # if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__

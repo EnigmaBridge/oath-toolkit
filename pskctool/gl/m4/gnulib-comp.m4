@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+  # Code from module absolute-header:
   # Code from module binary-io:
   # Code from module binary-io-tests:
   # Code from module errno:
@@ -62,6 +63,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module ftello-tests:
   # Code from module fwrite-tests:
   # Code from module gettext-h:
+  # Code from module gettimeofday:
+  # Code from module gettimeofday-tests:
   # Code from module include_next:
   # Code from module intprops:
   # Code from module intprops-tests:
@@ -108,6 +111,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module string-tests:
   # Code from module sys_stat:
   # Code from module sys_stat-tests:
+  # Code from module sys_time:
+  # Code from module sys_time-tests:
   # Code from module sys_types:
   # Code from module sys_types-tests:
   # Code from module test-framework-sh:
@@ -168,6 +173,12 @@ AC_DEFUN([gl_INIT],
   gl_STDIO_MODULE_INDICATOR([ftello])
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
+  gl_FUNC_GETTIMEOFDAY
+  if test $HAVE_GETTIMEOFDAY = 0 || test $REPLACE_GETTIMEOFDAY = 1; then
+    AC_LIBOBJ([gettimeofday])
+    gl_PREREQ_GETTIMEOFDAY
+  fi
+  gl_SYS_TIME_MODULE_INDICATOR([gettimeofday])
   AC_REQUIRE([gl_LARGEFILE])
   gl_FUNC_LSEEK
   if test $REPLACE_LSEEK = 1; then
@@ -216,6 +227,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_HEADER_STRING_H
   gl_HEADER_SYS_STAT_H
+  AC_PROG_MKDIR_P
+  gl_HEADER_SYS_TIME_H
   AC_PROG_MKDIR_P
   gl_SYS_TYPES_H
   AC_PROG_MKDIR_P
@@ -386,6 +399,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/ftell.c
   lib/ftello.c
   lib/gettext.h
+  lib/gettimeofday.c
   lib/intprops.h
   lib/lseek.c
   lib/malloc.c
@@ -409,6 +423,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strerror.c
   lib/string.in.h
   lib/sys_stat.in.h
+  lib/sys_time.in.h
   lib/sys_types.in.h
   lib/time.in.h
   lib/unistd.c
@@ -417,6 +432,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/version-etc.c
   lib/version-etc.h
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/errno_h.m4
   m4/error.m4
   m4/extensions.m4
@@ -428,6 +444,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fstat.m4
   m4/ftell.m4
   m4/ftello.m4
+  m4/gettimeofday.m4
   m4/gnulib-common.m4
   m4/include_next.m4
   m4/inttypes-pri.m4
@@ -454,6 +471,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/string_h.m4
   m4/sys_socket_h.m4
   m4/sys_stat_h.m4
+  m4/sys_time_h.m4
   m4/sys_types_h.m4
   m4/time_h.m4
   m4/ungetc.m4
@@ -486,6 +504,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-ftello4.c
   tests/test-ftello4.sh
   tests/test-fwrite.c
+  tests/test-gettimeofday.c
   tests/test-init.sh
   tests/test-intprops.c
   tests/test-inttypes.c
@@ -500,6 +519,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-strerror.c
   tests/test-string.c
   tests/test-sys_stat.c
+  tests/test-sys_time.c
   tests/test-sys_types.c
   tests/test-sys_wait.h
   tests/test-time.c
