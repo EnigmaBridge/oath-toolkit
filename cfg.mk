@@ -186,6 +186,6 @@ release-upload-ftp:
 	git push --tags
 
 tag: # Use "make tag VERSION=1.2.3"
-	git tag -s -u b565716f -m $(VERSION) $(tag)
+	git tag -s -m $(VERSION) $(tag)
 
 release: release-check release-upload-www release-upload-ftp
