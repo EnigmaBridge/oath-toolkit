@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2014 Simon Josefsson
+# Copyright (C) 2012-2015 Simon Josefsson
 
 # This library is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
@@ -17,6 +17,8 @@
 
 dist_man_MANS = $(gdoc_MANS)
 MAINTAINERCLEANFILES = $(dist_man_MANS)
+
+EXTRA_DIST = gdoc
 
 GDOC_BIN = $(srcdir)/gdoc
 GDOC_SRC = $(top_srcdir)/global.c $(top_srcdir)/coding.c	\

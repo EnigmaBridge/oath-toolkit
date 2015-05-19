@@ -1,5 +1,5 @@
 OATH Toolkit NEWS -- History of user-visible changes.           -*- outline -*-
-Copyright (C) 2009-2014 Simon Josefsson.  Licensed under the GPLv3+.
+Copyright (C) 2009-2015 Simon Josefsson.  Licensed under the GPLv3+.
 
 * Version 2.6.0 (unreleased)
 
@@ -16,6 +16,9 @@ Suggested by Robin.
 
 ** pam_oath: Check return value from strdup.
 Patch by Eero Häkkinen.
+
+** The script 'gdoc' is included in the tarball.
+Suggested by Jaroslav Škarvada.
 
 * Version 2.4.1 (released 2014-02-12)
 
