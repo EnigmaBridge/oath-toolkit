@@ -1,4 +1,4 @@
-# Copyright (C) 2009-2014 Simon Josefsson
+# Copyright (C) 2009-2015 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 AM_LDFLAGS = -no-install
 
 LDADD = ../pam_oath.la -lpam
+
+EXTRA_DIST = expect.oath
 
 TESTS = test-pam_oath
 if ROOT_TESTS

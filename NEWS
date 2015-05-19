@@ -17,7 +17,7 @@ Suggested by Robin.
 ** pam_oath: Check return value from strdup.
 Patch by Eero Häkkinen.
 
-** The script 'gdoc' is included in the tarball.
+** The files 'gdoc' and 'expect.oath' are now included in the tarball.
 Suggested by Jaroslav Škarvada.
 
 * Version 2.4.1 (released 2014-02-12)
