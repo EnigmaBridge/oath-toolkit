@@ -53,6 +53,7 @@ liboath/gl/arg-nonnull.h
 liboath/gl/c++defs.h
 liboath/gl/libgnu.la
 liboath/gl/stdalign.h
+liboath/gl/stddef.h
 liboath/gl/stdio.h
 liboath/gl/stdlib.h
 liboath/gl/string.h
@@ -277,6 +278,7 @@ libpskc/gl/.libs/
 libpskc/gl/arg-nonnull.h
 libpskc/gl/c++defs.h
 libpskc/gl/libgnu.la
+libpskc/gl/stddef.h
 libpskc/gl/string.h
 libpskc/gl/sys/
 libpskc/gl/tests/.deps/
@@ -519,6 +521,7 @@ oathtool/gl/m4/ltsugar.m4
 oathtool/gl/m4/ltversion.m4
 oathtool/gl/m4/lt~obsolete.m4
 oathtool/gl/parse-datetime.c
+oathtool/gl/stddef.h
 oathtool/gl/stdio.h
 oathtool/gl/stdlib.h
 oathtool/gl/string.h
@@ -647,6 +650,7 @@ pskctool/gl/m4/ltoptions.m4
 pskctool/gl/m4/ltsugar.m4
 pskctool/gl/m4/ltversion.m4
 pskctool/gl/m4/lt~obsolete.m4
+pskctool/gl/stddef.h
 pskctool/gl/stdio.h
 pskctool/gl/stdlib.h
 pskctool/gl/string.h
