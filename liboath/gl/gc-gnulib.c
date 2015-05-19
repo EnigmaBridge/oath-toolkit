@@ -1,5 +1,5 @@
 /* gc-gnulib.c --- Common gnulib internal crypto interface functions
- * Copyright (C) 2002-2014 Free Software Foundation, Inc.
+ * Copyright (C) 2002-2015 Free Software Foundation, Inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -626,6 +626,9 @@ gc_hash_open (Gc_hash hash, Gc_hash_mode mode, gc_hash_handle * outhandle)
   _gc_hash_ctx *ctx;
   Gc_rc rc = GC_OK;
 
+  if (mode != 0)
+    return GC_INVALID_HASH;
+
   ctx = calloc (sizeof (*ctx), 1);
   if (!ctx)
     return GC_MALLOC_ERROR;
@@ -658,16 +661,6 @@ gc_hash_open (Gc_hash hash, Gc_hash_mode mode, gc_hash_handle * outhandle)
       sha1_init_ctx (&ctx->sha1Context);
       break;
 #endif
-
-    default:
-      rc = GC_INVALID_HASH;
-      break;
-    }
-
-  switch (mode)
-    {
-    case 0:
-      break;
 
     default:
       rc = GC_INVALID_HASH;

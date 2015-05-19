@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2014 Free Software Foundation, Inc.
+# Copyright (C) 2002-2015 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -88,6 +88,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module snippet/c++defs:
   # Code from module snippet/warn-on-use:
   # Code from module ssize_t:
+  # Code from module stdalign:
+  # Code from module stdalign-tests:
   # Code from module stdarg:
   dnl Some compilers (e.g., AIX 5.3 cc) need to be in c99 mode
   dnl for the builtin va_copy to work.  With Autoconf 2.60 or later,
@@ -292,6 +294,7 @@ changequote([, ])dnl
   gl_FUNC_UNGETC_WORKS
   gl_INTTYPES_H
   gl_INTTYPES_INCOMPLETE
+  gl_STDALIGN_H
   AM_STDBOOL_H
   AC_REQUIRE([gt_TYPE_WCHAR_T])
   AC_REQUIRE([gt_TYPE_WINT_T])
@@ -461,6 +464,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/read-file.m4
   m4/realloc.m4
   m4/ssize_t.m4
+  m4/stdalign.m4
   m4/stdarg.m4
   m4/stdbool.m4
   m4/stddef_h.m4
@@ -511,6 +515,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-lseek.c
   tests/test-lseek.sh
   tests/test-read-file.c
+  tests/test-stdalign.c
   tests/test-stdbool.c
   tests/test-stddef.c
   tests/test-stdint.c
@@ -534,6 +539,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests=lib/fcntl.in.h
   tests=lib/fdopen.c
   tests=lib/inttypes.in.h
+  tests=lib/stdalign.in.h
   tests=lib/stdbool.in.h
   tests=lib/version-etc-fsf.c
   tests=lib/wchar.in.h
