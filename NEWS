@@ -1,7 +1,7 @@
 OATH Toolkit NEWS -- History of user-visible changes.           -*- outline -*-
 Copyright (C) 2009-2015 Simon Josefsson.  Licensed under the GPLv3+.
 
-* Version 2.6.0 (unreleased)
+* Version 2.6.0 (released 2015-05-19)
 
 ** liboath: Support TOTP with HMAC-SHA256 and HMAC-SHA512.
 This adds new APIs oath_totp_generate2, oath_totp_validate4 and
