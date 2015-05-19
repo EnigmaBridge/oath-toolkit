@@ -28,7 +28,7 @@ GDOC_SRC = $(top_srcdir)/global.c $(top_srcdir)/coding.c	\
 GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
         -bugsto $(PACKAGE_BUGREPORT) -pkg-name "$(PACKAGE_NAME)" \
         -includefuncprefix \
-        -copyright "2009-2014 Simon Josefsson" \
+        -copyright "2009-2015 Simon Josefsson" \
         -verbatimcopying
 
 include $(srcdir)/gdoc.mk
