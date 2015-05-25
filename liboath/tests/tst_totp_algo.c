@@ -131,8 +131,8 @@ main (void)
       if (strcmp (otp, tv[i].sha256otp) != 0)
 	{
 	  printf ("otp[%ld] got %s expected2 %s\n", i, otp, tv[i].sha256otp);
-	  if (strcmp (otp, "82762030") == 0
-	      && strcmp (tv[i].sha256otp, "65353130") == 0)
+	  if (strcmp (otp, "11281421") == 0
+	      && strcmp (tv[i].sha256otp, "77737706") == 0)
 	    printf ("Mismatch due to 32-bit time_t...\n");
 	  else
 	    return 1;
@@ -153,8 +153,8 @@ main (void)
       if (strcmp (otp, tv[i].sha512otp) != 0)
 	{
 	  printf ("otp[%ld] got %s expected2 %s\n", i, otp, tv[i].sha512otp);
-	  if (strcmp (otp, "82762030") == 0
-	      && strcmp (tv[i].sha512otp, "65353130") == 0)
+	  if (strcmp (otp, "29833534") == 0
+	      && strcmp (tv[i].sha512otp, "47863826") == 0)
 	    printf ("Mismatch due to 32-bit time_t...\n");
 	  else
 	    return 1;
