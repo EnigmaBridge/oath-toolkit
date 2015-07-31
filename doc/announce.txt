@@ -1,26 +1,10 @@
 To: oath-toolkit-help@nongnu.org
-Subject: OATH Toolkit 2.6.0
+Subject: OATH Toolkit 2.6.1
 <#part sign=pgpmime>
-Long time, no release!  I'm kicking off working on oath-toolkit with
-this release to fix some minor issues.  Now is a good time to ping me
-about anything I have neglected to do wrt oath-toolkit.
+Small build fix for 32-bit systems.
 
-** liboath: Support TOTP with HMAC-SHA256 and HMAC-SHA512.
-This adds new APIs oath_totp_generate2, oath_totp_validate4 and
-oath_totp_validate4_callback.
-
-** oathtool: The --totp parameter now take an optional argument to specify MAC.
-For example use --totp=sha256 to use HMAC-SHA256.  When --totp is used
-the default HMAC-SHA1 is used, as before.
-
-** pam_oath: Mention in README that you shouldn't use insecure keys.
-Suggested by Robin.
-
-** pam_oath: Check return value from strdup.
-Patch by Eero Häkkinen.
-
-** The files 'gdoc' and 'expect.oath' are now included in the tarball.
-Suggested by Jaroslav Škarvada.
+** liboath: Fix 'make check' on 32-bit systems.
+Report and patch by Christian Hesse.
 
 Happy hacking,
 Simon
@@ -69,8 +53,8 @@ are invited to join our oath-toolkit-help mailing list, see:
   https://lists.nongnu.org/mailman/listinfo/oath-toolkit-help
 
 Here are the compressed sources of the entire package:
-  http://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.0.tar.gz (4.0MB)
-  http://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.0.tar.gz.sig (OpenPGP)
+  http://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.1.tar.gz (4.1MB)
+  http://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.1.tar.gz.sig (OpenPGP)
 
 The software is cryptographically signed by the author using an OpenPGP
 key identified by the following information:
@@ -87,8 +71,8 @@ I have changed key since the last release, see my transition statement:
 
 Here are the SHA-1 and SHA-224 checksums:
 
-47d94633917a51527c7e545885422a464f703a2b  oath-toolkit-2.6.0.tar.gz
-488b20015df93761e496cd8ddb259a69cadbfa56efa9b8132e8e3f88  oath-toolkit-2.6.0.tar.gz
+62f49bdf9179c127182923afaf3549e826a2eebf  oath-toolkit-2.6.1.tar.gz
+725643a9c29ba176da8228fdd4f03fd9e98b4aad41ce3ccbc77275b3  oath-toolkit-2.6.1.tar.gz
 
 General information on contributing:
   http://www.nongnu.org/oath-toolkit/contrib.html
