@@ -1,7 +1,7 @@
 OATH Toolkit NEWS -- History of user-visible changes.           -*- outline -*-
 Copyright (C) 2009-2015 Simon Josefsson.  Licensed under the GPLv3+.
 
-* Version 2.6.1 (unreleased)
+* Version 2.6.1 (released 2015-07-31)
 
 ** liboath: Fix 'make check' on 32-bit systems.
 Report and patch by Christian Hesse.
