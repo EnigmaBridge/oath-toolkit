@@ -76,12 +76,7 @@ EXTRA_DIST += intprops.h
 
 ## begin gnulib module inttostr
 
-libgnu_la_SOURCES += \
-  imaxtostr.c \
-  inttostr.c \
-  offtostr.c \
-  uinttostr.c \
-  umaxtostr.c
+libgnu_la_SOURCES +=    imaxtostr.c    inttostr.c    offtostr.c    uinttostr.c    umaxtostr.c
 
 EXTRA_DIST += anytostr.c inttostr.h
 
