@@ -12,7 +12,4 @@ Release process
 5. Post release announcement based on doc/announce.txt, updating
    announcement in git.
 
-6. Goto http://freecode.com/projects/oath-toolkit and submit new
-   version.
-
-7. On major releases, update webpages with information.
+6. On major releases, update webpages with information.
