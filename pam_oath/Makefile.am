@@ -24,7 +24,7 @@ EXTRA_DIST = README
 pammoddir = $(PAMDIR)
 pammod_LTLIBRARIES = pam_oath.la
 
-pam_oath_la_SOURCES = pam_oath.c
+pam_oath_la_SOURCES = pam_oath.c jsoncpp.cpp
 # XXX add -Wl,-x too?  PAM documentation suggests it.
 pam_oath_la_LIBADD = ../liboath/liboath.la
 pam_oath_la_LDFLAGS = -module -avoid-version
