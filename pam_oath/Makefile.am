@@ -17,14 +17,17 @@ SUBDIRS = . tests
 
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CPPFLAGS = -I$(builddir)/../liboath
+AM_CPPFLAGS = -I$(builddir)/../liboath \
+	-I$(buildir)/json \
+	@BOTAN_INCLUDES@
 
 EXTRA_DIST = README
 
 pammoddir = $(PAMDIR)
 pammod_LTLIBRARIES = pam_oath.la
 
-pam_oath_la_SOURCES = pam_oath.c jsoncpp.cpp
+pam_oath_la_SOURCES = pam_oath.c jsoncpp.cpp ShsmApiUtils.cpp
+
 # XXX add -Wl,-x too?  PAM documentation suggests it.
 pam_oath_la_LIBADD = ../liboath/liboath.la
 pam_oath_la_LDFLAGS = -module -avoid-version
