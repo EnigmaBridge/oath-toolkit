@@ -39,6 +39,12 @@ AC_CHECK_HEADERS([security/pam_modules.h security/_pam_macros.h], [], [],
 
 AC_CHECK_LIB(pam, pam_get_item)
 
+# Check for library include arguments
+ACX_BOTAN
+
+# Do not give warnings for long-long. So that we can build with newer SQLite3 
+CPPFLAGS="${CPPFLAGS} -Wno-long-long -std=c++0x"
+
 AC_SUBST(PAMDIR, "\$(exec_prefix)/lib/security")
 AC_ARG_WITH(pam-dir,
   AC_HELP_STRING([--with-pam-dir=DIR],
