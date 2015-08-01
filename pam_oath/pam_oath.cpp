@@ -21,6 +21,7 @@
 #include <config.h>
 
 #include "oath.h"
+#include "ShsmApiUtils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,6 +64,8 @@
 #define MIN_OTP_LEN 6
 #define MAX_OTP_LEN 8
 
+#define PROTOCOL_ENIGMABRIDE 1
+
 struct cfg
 {
   int debug;
@@ -72,7 +75,18 @@ struct cfg
   char *usersfile;
   unsigned digits;
   unsigned window;
+  int protocol;
 };
+
+/* Declaration */
+int oath_authenticate_enigmabridge(const char *usersfile, const char *username, const char *otp,
+        size_t window, const char *passwd, time_t * last_otp);
+int verify_pass_remotely(const char* password, const char* handle);
+int eb_parse_usersfile(const char *username, const char *otp, size_t window, const char *passwd, time_t * last_otp,
+        FILE * infh, char **lineptr, size_t * n, uint64_t * new_moving_factor, size_t * skipped_users);
+
+
+
 
 static void
 parse_cfg (int flags, int argc, const char **argv, struct cfg *cfg)
@@ -86,6 +100,7 @@ parse_cfg (int flags, int argc, const char **argv, struct cfg *cfg)
   cfg->usersfile = NULL;
   cfg->digits = -1;
   cfg->window = 5;
+  cfg->protocol = 0;
 
   for (i = 0; i < argc; i++)
     {
@@ -103,6 +118,13 @@ parse_cfg (int flags, int argc, const char **argv, struct cfg *cfg)
 	cfg->digits = atoi (argv[i] + 7);
       if (strncmp (argv[i], "window=", 7) == 0)
 	cfg->window = atoi (argv[i] + 7);
+      if (strncmp(argv[i], "protocol=", 9) == 0){
+          // only enigmabridge is valid protocol
+          if (strcmp(argv[i]+9, "enigmabridge") == 0){
+              cfg->protocol = PROTOCOL_ENIGMABRIDE;
+          }         
+      }         
+          
     }
 
   if (cfg->digits != 6 && cfg->digits != 7 && cfg->digits != 8)
@@ -126,6 +148,7 @@ parse_cfg (int flags, int argc, const char **argv, struct cfg *cfg)
       D (("usersfile=%s", cfg->usersfile ? cfg->usersfile : "(null)"));
       D (("digits=%d", cfg->digits));
       D (("window=%d", cfg->window));
+      D (("protocol=%d", cfg->protocol));
     }
 }
 
@@ -204,7 +227,7 @@ pam_sm_authenticate (pam_handle_t * pamh,
 	size_t len = strlen (query_template) + strlen (user);
 	size_t wrote;
 
-	query_prompt = malloc (len);
+	query_prompt = (char*) malloc (len);
 	if (!query_prompt)
 	  {
 	    retval = PAM_BUF_ERR;
@@ -302,11 +325,18 @@ pam_sm_authenticate (pam_handle_t * pamh,
   DBG (("OTP: %s", otp ? otp : "(null)"));
 
   {
-    time_t last_otp;
-
-    rc = oath_authenticate_usersfile (cfg.usersfile,
-				      user,
-				      otp, cfg.window, onlypasswd, &last_otp);
+    time_t last_otp;    
+    if (cfg.protocol == PROTOCOL_ENIGMABRIDE){
+        DBG(("Enigmabridge protocol in use!!"));
+        rc = oath_authenticate_enigmabridge(cfg.usersfile,
+                    user,
+                    otp, cfg.window, onlypasswd, &last_otp);
+    } else {
+        rc = oath_authenticate_usersfile(cfg.usersfile,
+                    user,
+                    otp, cfg.window, onlypasswd, &last_otp);
+    }
+    
     DBG (("authenticate rc %d (%s: %s) last otp %s", rc,
 	  oath_strerror_name (rc) ? oath_strerror_name (rc) : "UNKNOWN",
 	  oath_strerror (rc), ctime (&last_otp)));
@@ -354,3 +384,198 @@ struct pam_module _pam_oath_modstruct = {
 };
 
 #endif
+
+
+/* EnigmaBridge stuff */
+static const char *whitespace = " \t\r\n";
+#define TIME_FORMAT_STRING "%Y-%m-%dT%H:%M:%SL"
+
+int
+oath_authenticate_enigmabridge(const char *usersfile,
+        const char *username,
+        const char *otp,
+        size_t window,
+        const char *passwd, time_t * last_otp) {    
+
+    D(("oath_authenticate_enigmabridge"));
+    
+    FILE *infh;
+    char *line = NULL;
+    size_t n = 0;
+    uint64_t new_moving_factor;
+    int rc;
+    size_t skipped_users;
+
+    infh = fopen(usersfile, "r");
+    if (!infh)
+        return OATH_NO_SUCH_FILE;
+
+    rc = eb_parse_usersfile(username, otp, window, passwd, last_otp,
+            infh, &line, &n, &new_moving_factor, &skipped_users);
+
+//    if (rc == OATH_OK) {
+//        char timestamp[30];
+//        size_t max = sizeof (timestamp);
+//        struct tm now;
+//        time_t t;
+//        size_t l;
+//        mode_t old_umask;
+//
+//        if (time(&t) == (time_t) - 1)
+//            return OATH_TIME_ERROR;
+//
+//        if (localtime_r(&t, &now) == NULL)
+//            return OATH_TIME_ERROR;
+//
+//        l = strftime(timestamp, max, TIME_FORMAT_STRING, &now);
+//        if (l != 20)
+//            return OATH_TIME_ERROR;
+//
+//        old_umask = umask(~(S_IRUSR | S_IWUSR));
+//
+//        rc = eb_update_usersfile(usersfile, username, otp, infh,
+//                &line, &n, timestamp, new_moving_factor,
+//                skipped_users);
+//
+//        umask(old_umask);
+//    }
+
+    free(line);
+    fclose(infh);
+
+    return rc;
+}
+
+int eb_parse_usersfile(const char *username,
+        const char *otp,
+        size_t window,
+        const char *passwd,
+        time_t * last_otp,
+        FILE * infh,
+        char **lineptr, size_t * n, uint64_t * new_moving_factor,
+        size_t * skipped_users) {
+    int bad_password = 0;
+
+    *skipped_users = 0;
+
+    while (getline(lineptr, n, infh) != -1) {
+        char *saveptr;
+        char *p = strtok_r(*lineptr, whitespace, &saveptr);
+        D(("p1=%s", p));
+        unsigned digits, totpstepsize;
+        char secret[32];
+        size_t secret_length = sizeof (secret);
+        uint64_t start_moving_factor = 0;
+        int rc = 0;
+        char *prev_otp = NULL;
+
+        if (p == NULL)
+            continue;
+
+        /* Read token type */
+        if (strcmp(p, "HOTP/T30") == 0 || strcmp(p, "HOTP/T30/6") == 0) {
+            D(("p2=%s", p));
+            // only HOTP with 6 digits and time step 30 seconds is supported
+            digits = 6;
+            totpstepsize = 30;
+        } else {
+            // otherwise try another line
+            continue;
+        }       
+            
+
+        /* Read username */
+        p = strtok_r(NULL, whitespace, &saveptr);
+        if (p == NULL || strcmp(p, username) != 0)
+            continue;
+        D(("p3=%s", p));
+
+        /* Read password. */
+        p = strtok_r(NULL, whitespace, &saveptr);
+        D(("p4=%s", p));
+        if (passwd) {
+            if (p == NULL)
+                continue;
+            if (strcmp(p, "-") == 0) {
+                if (*passwd != '\0') {
+                    bad_password = 1;
+                    rc = OATH_BAD_PASSWORD;
+                }
+            } else if (strcmp(p, "+") == 0) {
+                /* Externally verified. */
+            } else if (strcmp(p, passwd) != 0) {
+                bad_password = 1;
+                rc = OATH_BAD_PASSWORD;
+            }
+            if (rc == OATH_BAD_PASSWORD) {
+                (*skipped_users)++;
+                continue;
+            }
+            bad_password = 0;
+        }
+
+        /* Read handle - p contains string handle */
+        p = strtok_r(NULL, whitespace, &saveptr);
+        D(("p5=%s", p));
+        if (p == NULL)
+            continue;
+        
+        rc = verify_pass_remotely(otp, p);
+        
+//        rc = oath_hex2bin(p, secret, &secret_length);
+//        if (rc != OATH_OK)
+//            return rc;        
+        
+//        if (prev_otp && strcmp(prev_otp, otp) == 0)
+//            return OATH_REPLAYED_OTP;
+
+//        if (totpstepsize == 0)
+//            rc = oath_hotp_validate(secret, secret_length,
+//                start_moving_factor, window, otp);
+//        else if (prev_otp) {
+//            int prev_otp_pos, this_otp_pos, tmprc;
+//            rc = oath_totp_validate2(secret, secret_length,
+//                    time(NULL), totpstepsize, 0, window,
+//                    &this_otp_pos, otp);
+//            if (rc == OATH_INVALID_OTP) {
+//                (*skipped_users)++;
+//                continue;
+//            }
+//            if (rc < 0)
+//                return rc;
+//            tmprc = oath_totp_validate2(secret, secret_length,
+//                    time(NULL), totpstepsize, 0, window,
+//                    &prev_otp_pos, prev_otp);
+//            if (tmprc >= 0 && prev_otp_pos >= this_otp_pos)
+//                return OATH_REPLAYED_OTP;
+//        } else
+//            rc = oath_totp_validate(secret, secret_length,
+//                time(NULL), totpstepsize, 0, window, otp);
+//        if (rc == OATH_INVALID_OTP) {
+//            (*skipped_users)++;
+//            continue;
+//        }
+        
+        
+        
+        if (rc < 0)
+            return rc;
+//        *new_moving_factor = start_moving_factor + rc;
+        return OATH_OK;
+    }
+
+    if (*skipped_users) {
+        if (bad_password)
+            return OATH_BAD_PASSWORD;
+        else
+            return OATH_INVALID_OTP;
+    }
+
+    return OATH_UNKNOWN_USER;
+}
+
+int verify_pass_remotely(const char* password, const char* handle){
+    std::string jsonRequest = ShsmApiUtils::getRequestForOtpVerification(password, handle);
+    D(("getRequestForOtpVerification=%s", jsonRequest.c_str()));    
+    return OATH_OK;
+}
