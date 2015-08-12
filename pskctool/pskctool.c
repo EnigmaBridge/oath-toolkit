@@ -126,7 +126,7 @@ validate (const struct gengetopt_args_info *args_info)
 	   pskc_strerror (rc));
 
   if (quiet && !isvalid)
-    error (EXIT_FAILURE, 0, "");
+    error (EXIT_FAILURE, 0, " ");
   if (!quiet && isvalid)
     puts ("OK");
   else if (!quiet)
@@ -150,7 +150,7 @@ verify (const struct gengetopt_args_info *args_info)
     error (EXIT_FAILURE, 0, "verifying PSKC data: %s", pskc_strerror (rc));
 
   if (quiet && !valid_signature)
-    error (EXIT_FAILURE, 0, "");
+    error (EXIT_FAILURE, 0, " ");
   if (!quiet && valid_signature)
     puts ("OK");
   else if (!quiet)
