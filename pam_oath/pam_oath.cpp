@@ -79,9 +79,9 @@ struct cfg
 };
 
 /* Declaration */
-int oath_authenticate_enigmabridge(const char *usersfile, const char *username, const char *otp,
+int eb_oath_authenticate(const char *usersfile, const char *username, const char *otp,
         size_t window, const char *passwd, time_t * last_otp);
-int verify_pass_remotely(const char* password, const char* handle);
+int eb_verify_pass(const char* password, const char* handle);
 int eb_parse_usersfile(const char *username, const char *otp, size_t window, const char *passwd, time_t * last_otp,
         FILE * infh, char **lineptr, size_t * n, uint64_t * new_moving_factor, size_t * skipped_users);
 
@@ -328,7 +328,7 @@ pam_sm_authenticate (pam_handle_t * pamh,
     time_t last_otp;    
     if (cfg.protocol == PROTOCOL_ENIGMABRIDE){
         DBG(("Enigmabridge protocol in use!!"));
-        rc = oath_authenticate_enigmabridge(cfg.usersfile,
+        rc = eb_oath_authenticate(cfg.usersfile,
                     user,
                     otp, cfg.window, onlypasswd, &last_otp);
     } else {
@@ -391,7 +391,7 @@ static const char *whitespace = " \t\r\n";
 #define TIME_FORMAT_STRING "%Y-%m-%dT%H:%M:%SL"
 
 int
-oath_authenticate_enigmabridge(const char *usersfile,
+eb_oath_authenticate(const char *usersfile,
         const char *username,
         const char *otp,
         size_t window,
@@ -520,7 +520,7 @@ int eb_parse_usersfile(const char *username,
         if (p == NULL)
             continue;
         
-        rc = verify_pass_remotely(otp, p);
+        rc = eb_verify_pass(otp, p);
         
 //        rc = oath_hex2bin(p, secret, &secret_length);
 //        if (rc != OATH_OK)
@@ -574,8 +574,72 @@ int eb_parse_usersfile(const char *username,
     return OATH_UNKNOWN_USER;
 }
 
-int verify_pass_remotely(const char* password, const char* handle){
+int eb_verify_pass(const char* password, const char* handle){    
+//    return OATH_OK;
+    
+    char hostname[] = "127.0.0.1";
+    int port = 11111;
+    
+    if (hostname == NULL) {
+        fprintf(stderr, "Error: Hostname cannot be null for SHSM operation.\n");
+        return OATH_CRYPTO_ERROR;
+        //       TODO return OATH_NETWORK_INVALID_HOSTNAME; 
+    }
+
+    //
+    // Do the request, process response.
+    //
+    int requestStatus = 0;
     std::string jsonRequest = ShsmApiUtils::getRequestForOtpVerification(password, handle);
-    D(("getRequestForOtpVerification=%s", jsonRequest.c_str()));    
+    D(("requestForOtpVerification=%s", jsonRequest.c_str()));    
+
+    std::string jsonResponse = ShsmApiUtils::request(hostname, port, jsonRequest, &requestStatus);
+    if (requestStatus < 0) {
+        fprintf(stderr, "Error: Request was not successful, error code: %d.\n", requestStatus);
+        return OATH_CRYPTO_ERROR;
+        //       TODO return OATH_NETWORK_ERROR;
+    }
+
+    // Parse response, extract result, return it.
+    Json::Value root; // 'root' will contain the root value after parsing.
+    Json::Reader reader;
+    bool parsedSuccess = reader.parse(jsonResponse, root, false);
+    D(("responseForOtpVerification=%s", jsonResponse.c_str()));    
+    if (!parsedSuccess) {
+        fprintf(stderr, "Could not read data from socket.\n");
+        return OATH_CRYPTO_ERROR;
+    }
+
+    // Check status code.
+    int resStatus = ShsmApiUtils::getStatus(root);
+    if (resStatus != 9000) {
+        fprintf(stderr, "Result code is not 9000, cannot decrypt. Code: %d\n", resStatus);
+        return OATH_CRYPTO_ERROR;
+    }
+    
+    // otherwise everything correct
     return OATH_OK;
+
+//    // Write certificate to a given file.
+//    std::string crt = root["result"].asString();
+//    ssize_t crtLen = ShsmApiUtils::getJsonByteArraySize(crt);
+//    if (crtLen <= 0) {
+//        fprintf(stderr, "Certificate length is invalid: %ld.\n", (long) crtLen);
+//        return 1;
+//    }
+//
+//    Botan::byte * crtByteArray = (Botan::byte *) malloc(sizeof (Botan::byte) * crtLen);
+//    if (crtByteArray == NULL) {
+//        fprintf(stderr, "Unable to allocate memory for pubey.\n");
+//        return 1;
+//    }
+//
+//    int res = ShsmApiUtils::hexToBytes(crt, crtByteArray, (size_t) crtLen);
+//    fprintf(stderr, "PublicKey size: %ld, res: %d \n", (long) crtLen, res);
+//
+//    std::ofstream crtFile(crtPath);
+//    crtFile.write((char *) crtByteArray, crtLen);
+//    crtFile.close();
+//
+//    return 0;
 }
